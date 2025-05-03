@@ -1,0 +1,19 @@
+{
+  "name": "reelfake-dbdata-downloader",
+  "version": "1.0.0",
+  "description": "A static web page to allow users to download the csv files containing the sample data for reelfake api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pratapreddy15/reelfake-dbdata-downloader.git"
+  },
+  "author": "Pratap Reddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pratapreddy15/reelfake-dbdata-downloader/issues"
+  },
+  "homepage": "https://github.com/pratapreddy15/reelfake-dbdata-downloader#readme"
+}

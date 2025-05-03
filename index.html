@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./index.js" defer></script>
+    <style>
+      *,
+      ::after,
+      ::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 4rem 2rem;
+        border-spacing: 10px;
+      }
+
+      table td {
+        padding: 5px 10px;
+      }
+
+      table tr {
+        transition: all 250ms ease;
+      }
+
+      table tr:has(a:hover) {
+        background-color: #00a6ff;
+      }
+
+      a.hidden {
+        display: none;
+      }
+    </style>
+    <title>ReelFake - Download Sample Sql Data</title>
+  </head>
+  <body>
+    <div id="app">
+      <table id="table">
+        <tbody></tbody>
+      </table>
+    </div>
+  </body>
+</html>
