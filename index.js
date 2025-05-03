@@ -1,7 +1,7 @@
 const container = document.getElementById('container');
 const table = document.getElementById('table');
 
-const baseUrl = 'https://yyftnvy2eiwvulsh35op2xk27q0raxra.lambda-url.ap-southeast-2.on.aws';
+const baseUrl = 'https://mnqxvqrcrg2ffulyml22jjldey0uybbr.lambda-url.ap-southeast-2.on.aws';
 
 const clearTimers = () => {
   const cachedTimers = localStorage.getItem('timers');
@@ -25,14 +25,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   container.insertAdjacentElement('afterbegin', loader);
 
-  const response = await fetch(`${baseUrl}/files`);
+  try {
+    const response = await fetch(`${baseUrl}/files`);
 
-  if (response.status === 200) {
-    const files = await response.json();
-    loader.remove();
+    if (response.status === 200) {
+      const files = await response.json();
+      loader.remove();
 
-    for (const f of files) {
-      const row = `
+      for (const f of files) {
+        const row = `
         <tr>
             <td>${f}</td>
             <td>
@@ -44,20 +45,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         </tr>
       `;
 
-      const tableBody = table.querySelector('tbody');
-      tableBody.insertAdjacentHTML('afterbegin', row);
+        const tableBody = table.querySelector('tbody');
+        tableBody.insertAdjacentHTML('afterbegin', row);
+      }
     }
+
+    const linkRequest = document.querySelectorAll('.link_request');
+
+    linkRequest.forEach((link) =>
+      link.addEventListener('click', async function (e) {
+        e.preventDefault();
+        const fileRequest = new FileRequest(this);
+        await fileRequest.requestFile();
+      })
+    );
+  } catch (error) {
+    loader.textContent = 'Failed to process request';
   }
-
-  const linkRequest = document.querySelectorAll('.link_request');
-
-  linkRequest.forEach((link) =>
-    link.addEventListener('click', async function (e) {
-      e.preventDefault();
-      const fileRequest = new FileRequest(this);
-      await fileRequest.requestFile();
-    })
-  );
 });
 
 class FileRequest {
