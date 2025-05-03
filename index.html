@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="./index.js" defer></script>
+    <script type="module" src="./index.js" defer></script>
     <style>
       *,
       ::after,
@@ -11,19 +11,36 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: sans-serif;
       }
 
       #app {
         margin: 4rem 2rem;
       }
 
+      #container {
+        margin-top: 20px;
+        font-size: 1.2rem;
+      }
+
+      .loader {
+        font-weight: 400;
+      }
+
       a {
         text-decoration: none;
       }
 
+      a.hidden {
+        display: none;
+      }
+
+      a.disabled {
+        pointer-events: none;
+      }
+
       table {
         border-collapse: collapse;
-        margin-top: 20px;
         border-spacing: 10px;
       }
 
@@ -38,19 +55,17 @@
       table tr:has(a:hover) {
         background-color: #00a6ff;
       }
-
-      a.hidden {
-        display: none;
-      }
     </style>
     <title>ReelFake - Download Sample Sql Data</title>
   </head>
   <body>
     <div id="app">
       <h2>CSV Files with preloaded data for reelfake db</h2>
-      <table id="table">
-        <tbody></tbody>
-      </table>
+      <main id="container">
+        <table id="table">
+          <tbody></tbody>
+        </table>
+      </main>
     </div>
   </body>
 </html>

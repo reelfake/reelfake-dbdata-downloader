@@ -1,3 +1,4 @@
+const container = document.getElementById('container');
 const table = document.getElementById('table');
 
 const baseUrl = 'https://yyftnvy2eiwvulsh35op2xk27q0raxra.lambda-url.ap-southeast-2.on.aws';
@@ -18,11 +19,18 @@ window.addEventListener('close', clearTimers);
 document.addEventListener('DOMContentLoaded', async () => {
   clearTimers();
 
+  const loader = document.createElement('p');
+  loader.classList.add('loader');
+  loader.textContent = 'Loading...';
+
+  container.insertAdjacentElement('afterbegin', loader);
+
   const response = await fetch(`${baseUrl}/files`);
-  const tableBody = table.querySelector('tbody');
 
   if (response.status === 200) {
     const files = await response.json();
+    loader.remove();
+
     for (const f of files) {
       const row = `
         <tr>
@@ -36,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </tr>
       `;
 
+      const tableBody = table.querySelector('tbody');
       tableBody.insertAdjacentHTML('afterbegin', row);
     }
   }
@@ -59,17 +68,23 @@ class FileRequest {
   }
 
   async requestFile() {
+    this.link.textContent = 'Please wait...';
+    this.link.classList.add('disabled');
+
     const filename = this.link.dataset.filename;
     const response = await fetch(`${baseUrl}?file=${filename}`);
     const json = await response.json();
-    const fileUrl = json.url;
+    const { url: fileUrl, expiringIn: expiringInMs } = json;
+
+    this.link.textContent = 'Request';
+    this.link.classList.remove('disabled');
 
     const downloadLink = this.link.nextElementSibling;
     downloadLink.classList.remove('hidden');
     downloadLink.setAttribute('href', fileUrl);
     this.link.classList.add('hidden');
 
-    this.expiryLabel = new LinkExpiry(30 * 1000);
+    this.expiryLabel = new LinkExpiry(expiringInMs);
     downloadLink.insertAdjacentElement('afterend', this.expiryLabel.element);
     this.setTimerForExpiringLink();
   }
@@ -113,16 +128,9 @@ class LinkExpiry {
   }
 
   parseExpiryTime() {
-    const expiringInSeconds = Math.floor(this.expiringIn / 1000);
-    const expiryMinutes = Math.floor(expiringInSeconds / 60);
-    const expirySeconds = expiringInSeconds % 60;
+    const expiryTime = new Date(this.expiringIn).toISOString().split('T')[1].substring(0, 8);
 
-    const expiryTime = new Date(0, 0, 0, 0, expiryMinutes, expirySeconds);
-    const minutesText = expiryTime.getMinutes() < 10 ? `0${expiryTime.getMinutes()}` : expiryTime.getMinutes();
-    const secondsText = expiryTime.getSeconds() < 10 ? `0${expiryTime.getSeconds()}` : expiryTime.getSeconds();
-
-    const expiryTimeText = `00:${minutesText}:${secondsText}`;
-    return expiryTimeText;
+    return expiryTime;
   }
 
   destroy() {
