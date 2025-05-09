@@ -110,12 +110,10 @@ class FileRequest {
       this.expiryLabel.destroy();
     }, this.expiryLabel.expiringIn);
 
-    const existingTimers = localStorage.getItem('timers');
-    if (existingTimers) {
-      const timersArray = JSON.parse(existingTimers);
-      timersArray.push(expiringLinkTimer);
-      localStorage.setItem('timers', JSON.stringify(timersArray));
-    }
+    const existingTimers = localStorage.getItem('timers') || [];
+    const timersArray = JSON.parse(existingTimers);
+    timersArray.push(expiringLinkTimer);
+    localStorage.setItem('timers', JSON.stringify(timersArray));
 
     this.expiryLabel.startExpiryTimer();
   }
@@ -137,12 +135,10 @@ class LinkExpiry {
       this.element.textContent = `expiring in ${expiringText}`;
     }, 1000);
 
-    const existingIntervals = localStorage.getItem('intervals');
-    if (existingIntervals) {
-      const intervalsArray = JSON.parse(existingIntervals);
-      intervalsArray.push(this.interval);
-      localStorage.setItem('intervals', JSON.stringify(intervalsArray));
-    }
+    const existingIntervals = localStorage.getItem('intervals') || [];
+    const intervalsArray = JSON.parse(existingIntervals);
+    intervalsArray.push(this.interval);
+    localStorage.setItem('intervals', JSON.stringify(intervalsArray));
   }
 
   parseExpiryTime() {
