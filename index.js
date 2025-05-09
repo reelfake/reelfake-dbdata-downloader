@@ -10,6 +10,13 @@ const clearTimers = () => {
     timers.forEach((t) => clearTimeout(t));
   }
   localStorage.removeItem('timers');
+
+  const cachedIntervals = localStorage.getItem('intervals');
+  if (cachedIntervals) {
+    const intervals = JSON.parse(cachedIntervals);
+    intervals.forEach((i) => clearInterval(i));
+  }
+  localStorage.removeItem('intervals');
 };
 
 document.addEventListener('close', clearTimers);
@@ -129,6 +136,13 @@ class LinkExpiry {
       const expiringText = this.parseExpiryTime();
       this.element.textContent = `expiring in ${expiringText}`;
     }, 1000);
+
+    const existingIntervals = localStorage.getItem('intervals');
+    if (existingIntervals) {
+      const intervalsArray = JSON.parse(existingIntervals);
+      intervalsArray.push(this.interval);
+      localStorage.setItem('intervals', JSON.stringify(intervalsArray));
+    }
   }
 
   parseExpiryTime() {
