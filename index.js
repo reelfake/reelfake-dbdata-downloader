@@ -1,7 +1,7 @@
 const container = document.getElementById('container');
 const table = document.getElementById('table');
 
-const baseUrl = 'https://mnqxvqrcrg2ffulyml22jjldey0uybbr.lambda-url.ap-southeast-2.on.aws';
+const baseUrl = 'https://op3fh2cu66ghg4xsk4oog3at6y0bhjai.lambda-url.ap-southeast-2.on.aws';
 
 const clearTimers = () => {
   const cachedTimers = localStorage.getItem('timers');
